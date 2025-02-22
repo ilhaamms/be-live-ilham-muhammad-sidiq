@@ -16,6 +16,6 @@ func NewGoDeveloperService(config config.AppConfig) GoDeveloperService {
 	return &GoDeveloperServices{config: config}
 }
 
-func (service *GoDeveloperServices) GoDeveloper() (string, error) {
-	return service.config.GolangDeveloper, nil
+func (s *GoDeveloperServices) GoDeveloper() (string, error) {
+	return s.config.GolangDeveloper, nil
 }

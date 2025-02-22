@@ -22,7 +22,7 @@ func NewPalindromController(palindromService service.PalindromService) Palindrom
 	}
 }
 
-func (controller *PalindromControllers) GetPalindrom(ctx *gin.Context) {
+func (c *PalindromControllers) GetPalindrom(ctx *gin.Context) {
 
 	text := ctx.Query("text")
 	if text == "" {
@@ -33,7 +33,7 @@ func (controller *PalindromControllers) GetPalindrom(ctx *gin.Context) {
 		return
 	}
 
-	result := controller.palindromService.IsPalindrom(text)
+	result := c.palindromService.IsPalindrom(text)
 	if result != "Palindrome" {
 		ctx.JSON(http.StatusBadRequest, response.Error{
 			StatusCode: http.StatusBadRequest,

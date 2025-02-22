@@ -13,6 +13,7 @@ type LanguageService interface {
 	AddLanguage(language entity.ProgrammingLanguage) ([]entity.ProgrammingLanguage, error)
 	FetchAllLanguage() ([]entity.ProgrammingLanguage, error)
 	DeleteLanguageByID(id int) error
+	UpdateLanguageByID(id int, language entity.ProgrammingLanguage) error
 }
 
 type LanguageServices struct {
@@ -23,18 +24,20 @@ func NewLanguageService(languageRepo repository.LanguageRepository) LanguageServ
 	return &LanguageServices{languageRepo: languageRepo}
 }
 
-func (service *LanguageServices) FecthLanguageByID(id int) (*entity.ProgrammingLanguage, error) {
+func (s *LanguageServices) FecthLanguageByID(id int) (*entity.ProgrammingLanguage, error) {
 
 	if id <= 0 {
 		return nil, errors.New("parameter id must be greater than 0")
 	}
 
-	if id > len(entity.DataProgrammingLanguage) {
+	if len(entity.DataProgrammingLanguage) == 1 && id > 1 {
+		return nil, errors.New("data language only have 1 data")
+	} else if id > len(entity.DataProgrammingLanguage) {
 		return nil, errors.New("parameter id must be less than or equal to " + strconv.Itoa(len(entity.DataProgrammingLanguage)))
 	}
 
 	id = id - 1
-	dataLanguage, err := service.languageRepo.FecthLanguageByID(id)
+	dataLanguage, err := s.languageRepo.FecthLanguageByID(id)
 	if err != nil {
 		return nil, err
 	}
@@ -42,8 +45,8 @@ func (service *LanguageServices) FecthLanguageByID(id int) (*entity.ProgrammingL
 	return dataLanguage, nil
 }
 
-func (service *LanguageServices) AddLanguage(language entity.ProgrammingLanguage) ([]entity.ProgrammingLanguage, error) {
-	dataLanguage, err := service.languageRepo.AddLanguage(language)
+func (s *LanguageServices) AddLanguage(language entity.ProgrammingLanguage) ([]entity.ProgrammingLanguage, error) {
+	dataLanguage, err := s.languageRepo.AddLanguage(language)
 	if err != nil {
 		return nil, err
 	}
@@ -51,8 +54,8 @@ func (service *LanguageServices) AddLanguage(language entity.ProgrammingLanguage
 	return dataLanguage, nil
 }
 
-func (service *LanguageServices) FetchAllLanguage() ([]entity.ProgrammingLanguage, error) {
-	dataLanguage, err := service.languageRepo.FetchAllLanguage()
+func (s *LanguageServices) FetchAllLanguage() ([]entity.ProgrammingLanguage, error) {
+	dataLanguage, err := s.languageRepo.FetchAllLanguage()
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +63,7 @@ func (service *LanguageServices) FetchAllLanguage() ([]entity.ProgrammingLanguag
 	return dataLanguage, nil
 }
 
-func (service *LanguageServices) DeleteLanguageByID(id int) error {
+func (s *LanguageServices) DeleteLanguageByID(id int) error {
 	if len(entity.DataProgrammingLanguage) == 0 {
 		return errors.New("data language is empty")
 	}
@@ -69,12 +72,34 @@ func (service *LanguageServices) DeleteLanguageByID(id int) error {
 		return errors.New("parameter id must be greater than 0")
 	}
 
-	if id > len(entity.DataProgrammingLanguage) {
+	if len(entity.DataProgrammingLanguage) == 1 && id > 1 {
+		return errors.New("data language only have 1 data")
+	} else if id > len(entity.DataProgrammingLanguage) {
 		return errors.New("parameter id must be less than or equal to " + strconv.Itoa(len(entity.DataProgrammingLanguage)))
 	}
 
 	id = id - 1
-	err := service.languageRepo.DeleteLanguageByID(id)
+	err := s.languageRepo.DeleteLanguageByID(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *LanguageServices) UpdateLanguageByID(id int, language entity.ProgrammingLanguage) error {
+	if id <= 0 {
+		return errors.New("parameter id must be greater than 0")
+	}
+
+	if len(entity.DataProgrammingLanguage) == 1 && id > 1 {
+		return errors.New("data language only have 1 data")
+	} else if id > len(entity.DataProgrammingLanguage) {
+		return errors.New("parameter id must be less than or equal to " + strconv.Itoa(len(entity.DataProgrammingLanguage)))
+	}
+
+	id = id - 1
+	err := s.languageRepo.UpdateLanguageByID(id, language)
 	if err != nil {
 		return err
 	}

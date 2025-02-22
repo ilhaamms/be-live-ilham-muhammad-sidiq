@@ -22,8 +22,8 @@ func NewGoDeveloperController(goDeveloperService service.GoDeveloperService) GoD
 	}
 }
 
-func (controller *GoDeveloperControllers) GoDeveloper(ctx *gin.Context) {
-	result, err := controller.goDeveloperService.GoDeveloper()
+func (c *GoDeveloperControllers) GoDeveloper(ctx *gin.Context) {
+	result, err := c.goDeveloperService.GoDeveloper()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, response.Error{
 			StatusCode: http.StatusInternalServerError,

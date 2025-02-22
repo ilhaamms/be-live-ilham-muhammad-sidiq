@@ -16,6 +16,7 @@ type LanguageController interface {
 	AddLanguage(ctx *gin.Context)
 	GetAllLanguage(ctx *gin.Context)
 	RemoveLanguageByID(ctx *gin.Context)
+	ChangeLanguageByID(ctx *gin.Context)
 }
 
 type LanguageControllers struct {
@@ -28,7 +29,7 @@ func NewLanguageController(languageService service.LanguageService) LanguageCont
 	}
 }
 
-func (controller *LanguageControllers) GetLanguageByID(ctx *gin.Context) {
+func (c *LanguageControllers) GetLanguageByID(ctx *gin.Context) {
 
 	idParam := ctx.Param("id")
 	if idParam == "" {
@@ -48,7 +49,7 @@ func (controller *LanguageControllers) GetLanguageByID(ctx *gin.Context) {
 		return
 	}
 
-	result, err := controller.languageService.FecthLanguageByID(id)
+	result, err := c.languageService.FecthLanguageByID(id)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, response.Error{
 			StatusCode: http.StatusBadRequest,
@@ -64,7 +65,7 @@ func (controller *LanguageControllers) GetLanguageByID(ctx *gin.Context) {
 	})
 }
 
-func (controller *LanguageControllers) AddLanguage(ctx *gin.Context) {
+func (c *LanguageControllers) AddLanguage(ctx *gin.Context) {
 	var language entity.ProgrammingLanguage
 	err := ctx.ShouldBindJSON(&language)
 	if err != nil {
@@ -84,7 +85,7 @@ func (controller *LanguageControllers) AddLanguage(ctx *gin.Context) {
 		return
 	}
 
-	result, err := controller.languageService.AddLanguage(language)
+	result, err := c.languageService.AddLanguage(language)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, response.Error{
 			StatusCode: http.StatusBadRequest,
@@ -100,8 +101,8 @@ func (controller *LanguageControllers) AddLanguage(ctx *gin.Context) {
 	})
 }
 
-func (controller *LanguageControllers) GetAllLanguage(ctx *gin.Context) {
-	result, err := controller.languageService.FetchAllLanguage()
+func (c *LanguageControllers) GetAllLanguage(ctx *gin.Context) {
+	result, err := c.languageService.FetchAllLanguage()
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, response.Error{
 			StatusCode: http.StatusBadRequest,
@@ -117,7 +118,7 @@ func (controller *LanguageControllers) GetAllLanguage(ctx *gin.Context) {
 	})
 }
 
-func (controller *LanguageControllers) RemoveLanguageByID(ctx *gin.Context) {
+func (c *LanguageControllers) RemoveLanguageByID(ctx *gin.Context) {
 	idParam := ctx.Param("id")
 	if idParam == "" {
 		ctx.JSON(400, response.Error{
@@ -136,7 +137,51 @@ func (controller *LanguageControllers) RemoveLanguageByID(ctx *gin.Context) {
 		return
 	}
 
-	err = controller.languageService.DeleteLanguageByID(id)
+	err = c.languageService.DeleteLanguageByID(id)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, response.Error{
+			StatusCode: http.StatusBadRequest,
+			Message:    err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, response.Success{
+		StatusCode: http.StatusOK,
+		Message:    "Success",
+	})
+}
+
+func (c *LanguageControllers) ChangeLanguageByID(ctx *gin.Context) {
+	idParam := ctx.Param("id")
+	if idParam == "" {
+		ctx.JSON(400, response.Error{
+			StatusCode: http.StatusBadRequest,
+			Message:    "parameter id is required, please input id",
+		})
+		return
+	}
+
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		ctx.JSON(400, response.Error{
+			StatusCode: http.StatusBadRequest,
+			Message:    "parameter id must be a number",
+		})
+		return
+	}
+
+	var language entity.ProgrammingLanguage
+	err = ctx.ShouldBindJSON(&language)
+	if err != nil {
+		ctx.JSON(400, response.Error{
+			StatusCode: http.StatusBadRequest,
+			Message:    "min 1 field is required, please input min 1 field",
+		})
+		return
+	}
+
+	err = c.languageService.UpdateLanguageByID(id, language)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, response.Error{
 			StatusCode: http.StatusBadRequest,

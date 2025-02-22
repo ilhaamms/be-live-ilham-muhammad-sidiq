@@ -41,6 +41,7 @@ func (a *API) RegisterRoutes() *gin.Engine {
 		language.POST("/", a.languageController.AddLanguage)
 		language.GET("/", a.languageController.GetAllLanguage)
 		language.DELETE("/:id", a.languageController.RemoveLanguageByID)
+		language.PATCH("/:id", a.languageController.ChangeLanguageByID)
 	}
 
 	return r
