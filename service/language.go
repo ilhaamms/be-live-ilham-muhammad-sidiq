@@ -11,6 +11,7 @@ import (
 type LanguageService interface {
 	FecthLanguageByID(id int) (*entity.ProgrammingLanguage, error)
 	AddLanguage(language entity.ProgrammingLanguage) ([]entity.ProgrammingLanguage, error)
+	FetchAllLanguage() ([]entity.ProgrammingLanguage, error)
 }
 
 type LanguageServices struct {
@@ -42,6 +43,15 @@ func (service *LanguageServices) FecthLanguageByID(id int) (*entity.ProgrammingL
 
 func (service *LanguageServices) AddLanguage(language entity.ProgrammingLanguage) ([]entity.ProgrammingLanguage, error) {
 	dataLanguage, err := service.languageRepo.AddLanguage(language)
+	if err != nil {
+		return nil, err
+	}
+
+	return dataLanguage, nil
+}
+
+func (service *LanguageServices) FetchAllLanguage() ([]entity.ProgrammingLanguage, error) {
+	dataLanguage, err := service.languageRepo.FetchAllLanguage()
 	if err != nil {
 		return nil, err
 	}

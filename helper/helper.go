@@ -1,5 +1,7 @@
 package helper
 
+import "github.com/go-playground/validator/v10"
+
 func IsPalindrom(word string) bool {
 	reverseWord := ""
 
@@ -13,3 +15,5 @@ func IsPalindrom(word string) bool {
 		return false
 	}
 }
+
+var Validate = validator.New()

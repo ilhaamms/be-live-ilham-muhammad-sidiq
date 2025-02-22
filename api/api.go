@@ -39,6 +39,7 @@ func (a *API) RegisterRoutes() *gin.Engine {
 	{
 		language.GET("/:id", a.languageController.GetLanguage)
 		language.POST("/", a.languageController.AddLanguage)
+		language.GET("/", a.languageController.GetAllLanguage)
 	}
 
 	return r

@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/ilhaamms/backend-live/helper"
 	"github.com/ilhaamms/backend-live/models/entity"
 	"github.com/ilhaamms/backend-live/models/response"
 	"github.com/ilhaamms/backend-live/service"
@@ -13,6 +14,7 @@ import (
 type LanguageController interface {
 	GetLanguage(ctx *gin.Context)
 	AddLanguage(ctx *gin.Context)
+	GetAllLanguage(ctx *gin.Context)
 }
 
 type LanguageControllers struct {
@@ -72,7 +74,33 @@ func (controller *LanguageControllers) AddLanguage(ctx *gin.Context) {
 		return
 	}
 
+	err = helper.Validate.Struct(language)
+	if err != nil {
+		ctx.JSON(400, response.Error{
+			StatusCode: http.StatusBadRequest,
+			Message:    "all field is required, please input all field",
+		})
+		return
+	}
+
 	result, err := controller.languageService.AddLanguage(language)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, response.Error{
+			StatusCode: http.StatusBadRequest,
+			Message:    err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, response.Success{
+		StatusCode: http.StatusOK,
+		Message:    "Success",
+		Data:       result,
+	})
+}
+
+func (controller *LanguageControllers) GetAllLanguage(ctx *gin.Context) {
+	result, err := controller.languageService.FetchAllLanguage()
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, response.Error{
 			StatusCode: http.StatusBadRequest,

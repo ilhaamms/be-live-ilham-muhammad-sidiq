@@ -24,27 +24,6 @@ func NewPalindromController(palindromService service.PalindromService) Palindrom
 
 func (controller *PalindromControllers) GetPalindrom(ctx *gin.Context) {
 
-	// validate := validator.New()
-	// var wordPalindrom request.PalindromRequest
-
-	// err := ctx.ShouldBindJSON(&wordPalindrom)
-	// if err != nil {
-	// 	ctx.JSON(400, response.Error{
-	// 		StatusCode: http.StatusBadRequest,
-	// 		Message:    "Word is required, please input word",
-	// 	})
-	// 	return
-	// }
-
-	// err = validate.Struct(&wordPalindrom)
-	// if err != nil {
-	// 	ctx.JSON(400, response.Error{
-	// 		StatusCode: http.StatusBadRequest,
-	// 		Message:    "Word is required, please input word",
-	// 	})
-	// 	return
-	// }
-
 	text := ctx.Query("text")
 	if text == "" {
 		ctx.JSON(400, response.Error{
