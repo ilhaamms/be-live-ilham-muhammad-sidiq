@@ -12,9 +12,10 @@ import (
 )
 
 type LanguageController interface {
-	GetLanguage(ctx *gin.Context)
+	GetLanguageByID(ctx *gin.Context)
 	AddLanguage(ctx *gin.Context)
 	GetAllLanguage(ctx *gin.Context)
+	RemoveLanguageByID(ctx *gin.Context)
 }
 
 type LanguageControllers struct {
@@ -27,7 +28,7 @@ func NewLanguageController(languageService service.LanguageService) LanguageCont
 	}
 }
 
-func (controller *LanguageControllers) GetLanguage(ctx *gin.Context) {
+func (controller *LanguageControllers) GetLanguageByID(ctx *gin.Context) {
 
 	idParam := ctx.Param("id")
 	if idParam == "" {
@@ -113,5 +114,39 @@ func (controller *LanguageControllers) GetAllLanguage(ctx *gin.Context) {
 		StatusCode: http.StatusOK,
 		Message:    "Success",
 		Data:       result,
+	})
+}
+
+func (controller *LanguageControllers) RemoveLanguageByID(ctx *gin.Context) {
+	idParam := ctx.Param("id")
+	if idParam == "" {
+		ctx.JSON(400, response.Error{
+			StatusCode: http.StatusBadRequest,
+			Message:    "parameter id is required, please input id",
+		})
+		return
+	}
+
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		ctx.JSON(400, response.Error{
+			StatusCode: http.StatusBadRequest,
+			Message:    "parameter id must be a number",
+		})
+		return
+	}
+
+	err = controller.languageService.DeleteLanguageByID(id)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, response.Error{
+			StatusCode: http.StatusBadRequest,
+			Message:    err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, response.Success{
+		StatusCode: http.StatusOK,
+		Message:    "Success",
 	})
 }

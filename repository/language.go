@@ -6,6 +6,7 @@ type LanguageRepository interface {
 	FecthLanguageByID(id int) (*entity.ProgrammingLanguage, error)
 	AddLanguage(language entity.ProgrammingLanguage) ([]entity.ProgrammingLanguage, error)
 	FetchAllLanguage() ([]entity.ProgrammingLanguage, error)
+	DeleteLanguageByID(id int) error
 }
 
 type languageRepository struct {
@@ -27,4 +28,9 @@ func (repository *languageRepository) AddLanguage(language entity.ProgrammingLan
 
 func (repository *languageRepository) FetchAllLanguage() ([]entity.ProgrammingLanguage, error) {
 	return entity.DataProgrammingLanguage, nil
+}
+
+func (repository *languageRepository) DeleteLanguageByID(id int) error {
+	entity.DataProgrammingLanguage = append(entity.DataProgrammingLanguage[:id], entity.DataProgrammingLanguage[id+1:]...)
+	return nil
 }

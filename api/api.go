@@ -37,9 +37,10 @@ func (a *API) RegisterRoutes() *gin.Engine {
 
 	language := r.Group("/language")
 	{
-		language.GET("/:id", a.languageController.GetLanguage)
+		language.GET("/:id", a.languageController.GetLanguageByID)
 		language.POST("/", a.languageController.AddLanguage)
 		language.GET("/", a.languageController.GetAllLanguage)
+		language.DELETE("/:id", a.languageController.RemoveLanguageByID)
 	}
 
 	return r

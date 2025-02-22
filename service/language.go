@@ -12,6 +12,7 @@ type LanguageService interface {
 	FecthLanguageByID(id int) (*entity.ProgrammingLanguage, error)
 	AddLanguage(language entity.ProgrammingLanguage) ([]entity.ProgrammingLanguage, error)
 	FetchAllLanguage() ([]entity.ProgrammingLanguage, error)
+	DeleteLanguageByID(id int) error
 }
 
 type LanguageServices struct {
@@ -57,4 +58,26 @@ func (service *LanguageServices) FetchAllLanguage() ([]entity.ProgrammingLanguag
 	}
 
 	return dataLanguage, nil
+}
+
+func (service *LanguageServices) DeleteLanguageByID(id int) error {
+	if len(entity.DataProgrammingLanguage) == 0 {
+		return errors.New("data language is empty")
+	}
+
+	if id <= 0 {
+		return errors.New("parameter id must be greater than 0")
+	}
+
+	if id > len(entity.DataProgrammingLanguage) {
+		return errors.New("parameter id must be less than or equal to " + strconv.Itoa(len(entity.DataProgrammingLanguage)))
+	}
+
+	id = id - 1
+	err := service.languageRepo.DeleteLanguageByID(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
