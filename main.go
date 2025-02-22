@@ -21,11 +21,13 @@ func main() {
 
 	goDeveloperService := service.NewGoDeveloperService(*config)
 	languageService := service.NewLanguageService(languageRepo)
+	palindromService := service.NewPalindromService()
 
 	goDeveloperController := controller.NewGoDeveloperController(goDeveloperService)
 	languageController := controller.NewLanguageController(languageService)
+	palindromController := controller.NewPalindromController(palindromService)
 
-	api := api.NewAPI(*config, goDeveloperController, languageController)
+	api := api.NewAPI(*config, goDeveloperController, languageController, palindromController)
 
 	api.Run()
 }

@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/ilhaamms/backend-live/models/response"
 	"github.com/ilhaamms/backend-live/service"
 )
 
@@ -24,11 +25,16 @@ func NewLanguageController(languageService service.LanguageService) LanguageCont
 func (controller *LanguageControllers) GetLanguage(ctx *gin.Context) {
 	result, err := controller.languageService.FecthLanguage()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
+		ctx.JSON(http.StatusInternalServerError, response.Error{
+			StatusCode: http.StatusInternalServerError,
+			Message:    err.Error(),
 		})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, result)
+	ctx.JSON(http.StatusOK, response.Success{
+		StatusCode: http.StatusOK,
+		Message:    "Success",
+		Data:       result,
+	})
 }

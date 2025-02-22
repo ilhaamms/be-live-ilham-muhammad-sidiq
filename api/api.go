@@ -12,17 +12,20 @@ type API struct {
 	config                config.AppConfig
 	goDeveloperController controller.GoDeveloperController
 	languageController    controller.LanguageController
+	palindromController   controller.PalindromController
 }
 
 func NewAPI(
 	config config.AppConfig,
 	goDeveloperController controller.GoDeveloperController,
 	languageController controller.LanguageController,
+	palindromController controller.PalindromController,
 ) *API {
 	return &API{
 		config:                config,
 		goDeveloperController: goDeveloperController,
 		languageController:    languageController,
+		palindromController:   palindromController,
 	}
 }
 
@@ -31,6 +34,7 @@ func (a *API) RegisterRoutes() *gin.Engine {
 
 	r.GET("/", a.goDeveloperController.GoDeveloper)
 	r.GET("/language", a.languageController.GetLanguage)
+	r.GET("/palindrom", a.palindromController.GetPalindrom)
 
 	// auth := r.Group("/auth")
 	// {
