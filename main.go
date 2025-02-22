@@ -19,7 +19,7 @@ func main() {
 
 	languageRepo := repository.NewLanguageRepository()
 
-	goDeveloperService := service.NewGoDeveloperService(*config)
+	goDeveloperService := service.NewGoDeveloperService()
 	languageService := service.NewLanguageService(languageRepo)
 	palindromService := service.NewPalindromService()
 

@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/ilhaamms/backend-live/models/config"
+	"github.com/ilhaamms/backend-live/models/entity"
 )
 
 type GoDeveloperService interface {
@@ -9,13 +9,17 @@ type GoDeveloperService interface {
 }
 
 type GoDeveloperServices struct {
-	config config.AppConfig
 }
 
-func NewGoDeveloperService(config config.AppConfig) GoDeveloperService {
-	return &GoDeveloperServices{config: config}
+func NewGoDeveloperService() GoDeveloperService {
+	return &GoDeveloperServices{}
 }
 
 func (s *GoDeveloperServices) GoDeveloper() (string, error) {
-	return s.config.GolangDeveloper, nil
+
+	goDeveloper := entity.Developer{
+		GoDeveloper: "Hello Go developers",
+	}
+
+	return goDeveloper.GoDeveloper, nil
 }

@@ -8,8 +8,7 @@ import (
 )
 
 type AppConfig struct {
-	GolangDeveloper string `envconfig:"GO_DEVELOPER" required:"true"`
-	PortService     string `envconfig:"PORT_SERVICE" required:"true"`
+	PortService string `envconfig:"PORT_SERVICE" required:"true"`
 }
 
 func NewAppConfig() (*AppConfig, error) {
