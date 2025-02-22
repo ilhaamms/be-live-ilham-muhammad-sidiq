@@ -6,7 +6,7 @@ import (
 )
 
 type LanguageService interface {
-	FecthLanguage() (*entity.ProgrammingLanguage, error)
+	FecthLanguageByID(id int) (*entity.ProgrammingLanguage, error)
 }
 
 type LanguageServices struct {
@@ -17,11 +17,11 @@ func NewLanguageService(languageRepo repository.LanguageRepository) LanguageServ
 	return &LanguageServices{languageRepo: languageRepo}
 }
 
-func (service *LanguageServices) FecthLanguage() (*entity.ProgrammingLanguage, error) {
-	dataLanguage, err := service.languageRepo.FecthLanguage()
+func (service *LanguageServices) FecthLanguageByID(id int) (*entity.ProgrammingLanguage, error) {
+	dataLanguage, err := service.languageRepo.FecthLanguageByID(id)
 	if err != nil {
 		return nil, err
 	}
 
-	return &dataLanguage, nil
+	return dataLanguage, nil
 }

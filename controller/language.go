@@ -2,8 +2,10 @@ package controller
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/ilhaamms/backend-live/models/entity"
 	"github.com/ilhaamms/backend-live/models/response"
 	"github.com/ilhaamms/backend-live/service"
 )
@@ -23,7 +25,43 @@ func NewLanguageController(languageService service.LanguageService) LanguageCont
 }
 
 func (controller *LanguageControllers) GetLanguage(ctx *gin.Context) {
-	result, err := controller.languageService.FecthLanguage()
+
+	idParam := ctx.Param("id")
+	if idParam == "" {
+		ctx.JSON(400, response.Error{
+			StatusCode: http.StatusBadRequest,
+			Message:    "parameter id is required, please input id",
+		})
+		return
+	}
+
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		ctx.JSON(400, response.Error{
+			StatusCode: http.StatusBadRequest,
+			Message:    "parameter id must be a number",
+		})
+		return
+	}
+
+	if id <= 0 {
+		ctx.JSON(400, response.Error{
+			StatusCode: http.StatusBadRequest,
+			Message:    "parameter id must be greater than 0",
+		})
+		return
+	}
+
+	if id > len(entity.DataProgrammingLanguage) {
+		ctx.JSON(400, response.Error{
+			StatusCode: http.StatusBadRequest,
+			Message:    "parameter id must be less than or equal to " + strconv.Itoa(len(entity.DataProgrammingLanguage)),
+		})
+		return
+	}
+
+	id = id - 1
+	result, err := controller.languageService.FecthLanguageByID(id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, response.Error{
 			StatusCode: http.StatusInternalServerError,

@@ -33,7 +33,7 @@ func (a *API) RegisterRoutes() *gin.Engine {
 	r := gin.Default()
 
 	r.GET("/", a.goDeveloperController.GoDeveloper)
-	r.GET("/language", a.languageController.GetLanguage)
+	r.GET("/language/:id", a.languageController.GetLanguage)
 	r.GET("/palindrom", a.palindromController.GetPalindrom)
 
 	// auth := r.Group("/auth")
