@@ -1,0 +1,28 @@
+{
+    "language": "Python",
+    "appeared": 1991,
+    "created": [
+        "Guido van Rossum"
+    ],
+    "functional": true,
+    "object-oriented": true,
+    "relation": {
+        "influenced-by": [
+            "C",
+            "C++",
+            "ALGOL 68",
+            "Ada",
+            "Haskell",
+            "Java",
+            "Lisp"
+        ],
+        "influences": [
+            "Go",
+            "CoffeeScript",
+            "JavaScript",
+            "Julia",
+            "Ruby",
+            "Swift"
+        ]
+    }
+}

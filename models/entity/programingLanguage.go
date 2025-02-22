@@ -1,17 +1,17 @@
 package entity
 
 type Relation struct {
-	InfluencedBy []string `json:"influenced-by"`
-	Influences   []string `json:"influences"`
+	InfluencedBy []string `json:"influenced-by" validate:"required"`
+	Influences   []string `json:"influences" validate:"required"`
 }
 
 type ProgrammingLanguage struct {
-	Language       string   `json:"language"`
-	Appeared       int      `json:"appeared"`
-	Created        []string `json:"created"`
-	Functional     bool     `json:"functional"`
-	ObjectOriented bool     `json:"object-oriented"`
-	Relation       Relation `json:"relation"`
+	Language       string   `json:"language" validate:"required"`
+	Appeared       int      `json:"appeared" validate:"required"`
+	Created        []string `json:"created" validate:"required"`
+	Functional     bool     `json:"functional" validate:"required"`
+	ObjectOriented bool     `json:"object-oriented" validate:"required"`
+	Relation       Relation `json:"relation" validate:"required"`
 }
 
 var DataProgrammingLanguage = []ProgrammingLanguage{

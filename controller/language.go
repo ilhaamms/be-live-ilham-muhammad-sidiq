@@ -12,6 +12,7 @@ import (
 
 type LanguageController interface {
 	GetLanguage(ctx *gin.Context)
+	AddLanguage(ctx *gin.Context)
 }
 
 type LanguageControllers struct {
@@ -44,27 +45,37 @@ func (controller *LanguageControllers) GetLanguage(ctx *gin.Context) {
 		return
 	}
 
-	if id <= 0 {
-		ctx.JSON(400, response.Error{
-			StatusCode: http.StatusBadRequest,
-			Message:    "parameter id must be greater than 0",
-		})
-		return
-	}
-
-	if id > len(entity.DataProgrammingLanguage) {
-		ctx.JSON(400, response.Error{
-			StatusCode: http.StatusBadRequest,
-			Message:    "parameter id must be less than or equal to " + strconv.Itoa(len(entity.DataProgrammingLanguage)),
-		})
-		return
-	}
-
-	id = id - 1
 	result, err := controller.languageService.FecthLanguageByID(id)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, response.Error{
-			StatusCode: http.StatusInternalServerError,
+		ctx.JSON(http.StatusBadRequest, response.Error{
+			StatusCode: http.StatusBadRequest,
+			Message:    err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, response.Success{
+		StatusCode: http.StatusOK,
+		Message:    "Success",
+		Data:       result,
+	})
+}
+
+func (controller *LanguageControllers) AddLanguage(ctx *gin.Context) {
+	var language entity.ProgrammingLanguage
+	err := ctx.ShouldBindJSON(&language)
+	if err != nil {
+		ctx.JSON(400, response.Error{
+			StatusCode: http.StatusBadRequest,
+			Message:    "all field is required, please input all field",
+		})
+		return
+	}
+
+	result, err := controller.languageService.AddLanguage(language)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, response.Error{
+			StatusCode: http.StatusBadRequest,
 			Message:    err.Error(),
 		})
 		return
