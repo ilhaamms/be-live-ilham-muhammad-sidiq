@@ -1,6 +1,5 @@
 package helper
 
-// function untuk mengecek apakah kata palindrom atau tidak
 func IsPalindrom(word string) bool {
 	reverseWord := ""
 

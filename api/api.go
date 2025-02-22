@@ -1,35 +1,36 @@
 package api
 
 import (
+	"log"
+
 	"github.com/gin-gonic/gin"
 	"github.com/ilhaamms/backend-live/controller"
+	"github.com/ilhaamms/backend-live/models/config"
 )
 
 type API struct {
+	config                config.AppConfig
 	goDeveloperController controller.GoDeveloperController
-	// authorController controller.AuthorController
-	// userController   controller.UserController
-	// bookController   controller.BookController
+	languageController    controller.LanguageController
 }
 
 func NewAPI(
+	config config.AppConfig,
 	goDeveloperController controller.GoDeveloperController,
-	// authorController controller.AuthorController,
-	// userController controller.UserController,
-	// bookController controller.BookController,
+	languageController controller.LanguageController,
 ) *API {
 	return &API{
+		config:                config,
 		goDeveloperController: goDeveloperController,
-		// authorController: authorController,
-		// userController:   userController,
-		// bookController:   bookController,
+		languageController:    languageController,
 	}
 }
 
 func (a *API) RegisterRoutes() *gin.Engine {
 	r := gin.Default()
 
-	r.GET("/go-developer", a.goDeveloperController.GoDeveloper)
+	r.GET("/", a.goDeveloperController.GoDeveloper)
+	r.GET("/language", a.languageController.GetLanguage)
 
 	// auth := r.Group("/auth")
 	// {
@@ -54,5 +55,7 @@ func (a *API) RegisterRoutes() *gin.Engine {
 
 func (a *API) Run() {
 	r := a.RegisterRoutes()
-	r.Run(":8080")
+
+	log.Printf("Server running on port %s", a.config.PortService)
+	r.Run(":" + a.config.PortService)
 }

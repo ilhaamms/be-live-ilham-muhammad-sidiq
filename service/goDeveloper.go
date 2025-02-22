@@ -1,17 +1,21 @@
 package service
 
+import (
+	"github.com/ilhaamms/backend-live/models/config"
+)
+
 type GoDeveloperService interface {
 	GoDeveloper() (string, error)
 }
 
 type GoDeveloperServices struct {
-	// UserRepository repository.UserRepository
+	config config.AppConfig
 }
 
-func NewGoDeveloperService() GoDeveloperService {
-	return &GoDeveloperServices{}
+func NewGoDeveloperService(config config.AppConfig) GoDeveloperService {
+	return &GoDeveloperServices{config: config}
 }
 
 func (service *GoDeveloperServices) GoDeveloper() (string, error) {
-	return "Hello Go developers", nil
+	return service.config.GolangDeveloper, nil
 }

@@ -9,7 +9,6 @@ import (
 
 type GoDeveloperController interface {
 	GoDeveloper(ctx *gin.Context)
-	// Login(ctx *gin.Context)
 }
 
 type GoDeveloperControllers struct {
@@ -26,12 +25,10 @@ func (controller *GoDeveloperControllers) GoDeveloper(ctx *gin.Context) {
 	result, err := controller.goDeveloperService.GoDeveloper()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"message": err.Error(),
+			"error": err.Error(),
 		})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": result,
-	})
+	ctx.JSON(http.StatusOK, result)
 }
