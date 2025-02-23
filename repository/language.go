@@ -4,7 +4,7 @@ import "github.com/ilhaamms/backend-live/models/entity"
 
 type LanguageRepository interface {
 	FecthLanguageByID(id int) (*entity.ProgrammingLanguage, error)
-	AddLanguage(language entity.ProgrammingLanguage) ([]entity.ProgrammingLanguage, error)
+	AddLanguage(language entity.ProgrammingLanguage) (entity.ProgrammingLanguage, error)
 	FetchAllLanguage() ([]entity.ProgrammingLanguage, error)
 	DeleteLanguageByID(id int) error
 	UpdateLanguageByID(id int, language entity.ProgrammingLanguage) error
@@ -22,9 +22,9 @@ func (r *languageRepository) FecthLanguageByID(id int) (*entity.ProgrammingLangu
 	return &dataProgramingLanguage, nil
 }
 
-func (r *languageRepository) AddLanguage(language entity.ProgrammingLanguage) ([]entity.ProgrammingLanguage, error) {
+func (r *languageRepository) AddLanguage(language entity.ProgrammingLanguage) (entity.ProgrammingLanguage, error) {
 	entity.DataProgrammingLanguage = append(entity.DataProgrammingLanguage, language)
-	return entity.DataProgrammingLanguage, nil
+	return language, nil
 }
 
 func (r *languageRepository) FetchAllLanguage() ([]entity.ProgrammingLanguage, error) {

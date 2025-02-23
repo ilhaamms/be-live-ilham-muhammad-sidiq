@@ -11,23 +11,23 @@ func NewPalindromService() PalindromService {
 	return &palindromService{}
 }
 
-func (s *palindromService) CheckPalindrom(word string) bool {
-	reverseWord := ""
+func (s *palindromService) CheckPalindrom(text string) bool {
+	reverseText := ""
 
-	for i := len(word) - 1; i >= 0; i-- {
-		reverseWord += string(word[i])
+	for i := len(text) - 1; i >= 0; i-- {
+		reverseText += string(text[i])
 	}
 
-	if word == reverseWord {
+	if text == reverseText {
 		return true
 	} else {
 		return false
 	}
 }
 
-func (s *palindromService) IsPalindrom(word string) string {
+func (s *palindromService) IsPalindrom(text string) string {
 
-	isPlaindrom := s.CheckPalindrom(word)
+	isPlaindrom := s.CheckPalindrom(text)
 	if !isPlaindrom {
 		return "Not palindrome"
 	}

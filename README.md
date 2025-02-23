@@ -22,4 +22,4 @@ go run main.go
 ```
 
 # Dokumentasi API
-Dokumentasi API user-management-api bisa dilihat : [disini](belum)
+Dokumentasi API be-live-ilham-muhammad-sidiq bisa dilihat : [disini](https://documenter.getpostman.com/view/26190643/2sAYdcrXVD)

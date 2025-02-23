@@ -10,7 +10,7 @@ import (
 
 type LanguageService interface {
 	FecthLanguageByID(id int) (*entity.ProgrammingLanguage, error)
-	AddLanguage(language entity.ProgrammingLanguage) ([]entity.ProgrammingLanguage, error)
+	AddLanguage(language entity.ProgrammingLanguage) (*entity.ProgrammingLanguage, error)
 	FetchAllLanguage() ([]entity.ProgrammingLanguage, error)
 	DeleteLanguageByID(id int) error
 	UpdateLanguageByID(id int, language entity.ProgrammingLanguage) error
@@ -30,10 +30,8 @@ func (s *LanguageServices) FecthLanguageByID(id int) (*entity.ProgrammingLanguag
 		return nil, errors.New("parameter id must be greater than 0")
 	}
 
-	if len(entity.DataProgrammingLanguage) == 1 && id > 1 {
-		return nil, errors.New("data language only have 1 data")
-	} else if id > len(entity.DataProgrammingLanguage) {
-		return nil, errors.New("parameter id must be less than or equal to " + strconv.Itoa(len(entity.DataProgrammingLanguage)))
+	if id > len(entity.DataProgrammingLanguage) {
+		return nil, errors.New("data languange with id " + strconv.Itoa(id) + " not found")
 	}
 
 	id = id - 1
@@ -45,13 +43,13 @@ func (s *LanguageServices) FecthLanguageByID(id int) (*entity.ProgrammingLanguag
 	return dataLanguage, nil
 }
 
-func (s *LanguageServices) AddLanguage(language entity.ProgrammingLanguage) ([]entity.ProgrammingLanguage, error) {
+func (s *LanguageServices) AddLanguage(language entity.ProgrammingLanguage) (*entity.ProgrammingLanguage, error) {
 	dataLanguage, err := s.languageRepo.AddLanguage(language)
 	if err != nil {
 		return nil, err
 	}
 
-	return dataLanguage, nil
+	return &dataLanguage, nil
 }
 
 func (s *LanguageServices) FetchAllLanguage() ([]entity.ProgrammingLanguage, error) {
@@ -64,18 +62,17 @@ func (s *LanguageServices) FetchAllLanguage() ([]entity.ProgrammingLanguage, err
 }
 
 func (s *LanguageServices) DeleteLanguageByID(id int) error {
-	if len(entity.DataProgrammingLanguage) == 0 {
-		return errors.New("data language is empty")
-	}
 
 	if id <= 0 {
 		return errors.New("parameter id must be greater than 0")
 	}
 
-	if len(entity.DataProgrammingLanguage) == 1 && id > 1 {
-		return errors.New("data language only have 1 data")
-	} else if id > len(entity.DataProgrammingLanguage) {
-		return errors.New("parameter id must be less than or equal to " + strconv.Itoa(len(entity.DataProgrammingLanguage)))
+	if len(entity.DataProgrammingLanguage) == 0 {
+		return errors.New("data language is empty")
+	}
+
+	if id > len(entity.DataProgrammingLanguage) {
+		return errors.New("data languange with id " + strconv.Itoa(id) + " not found")
 	}
 
 	id = id - 1
@@ -92,10 +89,8 @@ func (s *LanguageServices) UpdateLanguageByID(id int, language entity.Programmin
 		return errors.New("parameter id must be greater than 0")
 	}
 
-	if len(entity.DataProgrammingLanguage) == 1 && id > 1 {
-		return errors.New("data language only have 1 data")
-	} else if id > len(entity.DataProgrammingLanguage) {
-		return errors.New("parameter id must be less than or equal to " + strconv.Itoa(len(entity.DataProgrammingLanguage)))
+	if id > len(entity.DataProgrammingLanguage) {
+		return errors.New("data languange with id " + strconv.Itoa(id) + " not found")
 	}
 
 	id = id - 1

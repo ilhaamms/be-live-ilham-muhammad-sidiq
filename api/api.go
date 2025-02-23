@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/ilhaamms/backend-live/controller"
+	"github.com/ilhaamms/backend-live/middleware"
 	"github.com/ilhaamms/backend-live/models/config"
 )
 
@@ -32,11 +33,14 @@ func NewAPI(
 func (a *API) RegisterRoutes() *gin.Engine {
 	r := gin.Default()
 
+	r.NoRoute(middleware.MethodNotAllowedMiddleware())
+
 	r.GET("/", a.goDeveloperController.GoDeveloper)
 	r.GET("/palindrom", a.palindromController.GetPalindrom)
 
 	language := r.Group("/language")
 	{
+
 		language.GET("/:id", a.languageController.GetLanguageByID)
 		language.POST("/", a.languageController.AddLanguage)
 		language.GET("/", a.languageController.GetAllLanguage)

@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/ilhaamms/backend-live/models/response"
+	"github.com/ilhaamms/backend-live/helper"
 	"github.com/ilhaamms/backend-live/service"
 )
 
@@ -26,24 +26,18 @@ func (c *PalindromControllers) GetPalindrom(ctx *gin.Context) {
 
 	text := ctx.Query("text")
 	if text == "" {
-		ctx.JSON(400, response.Error{
-			StatusCode: http.StatusBadRequest,
-			Message:    "parameter text is required, please input text",
-		})
+		err := "parameter text is required, please input text"
+		helper.ResponseJsonError(ctx, http.StatusBadRequest, err)
 		return
 	}
 
 	result := c.palindromService.IsPalindrom(text)
 	if result != "Palindrome" {
-		ctx.JSON(http.StatusBadRequest, response.Error{
-			StatusCode: http.StatusBadRequest,
-			Message:    "Not palindrome",
-		})
+		err := "Not Palindrome"
+		helper.ResponseJsonError(ctx, http.StatusBadRequest, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, response.Success{
-		StatusCode: http.StatusOK,
-		Message:    "Palindrome",
-	})
+	message := "Palindrome"
+	helper.ResponseJsonSuccess(ctx, http.StatusOK, message, nil)
 }

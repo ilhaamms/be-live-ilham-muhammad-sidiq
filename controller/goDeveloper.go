@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/ilhaamms/backend-live/models/response"
+	"github.com/ilhaamms/backend-live/helper"
 	"github.com/ilhaamms/backend-live/service"
 )
 
@@ -25,16 +25,9 @@ func NewGoDeveloperController(goDeveloperService service.GoDeveloperService) GoD
 func (c *GoDeveloperControllers) GoDeveloper(ctx *gin.Context) {
 	result, err := c.goDeveloperService.GoDeveloper()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, response.Error{
-			StatusCode: http.StatusInternalServerError,
-			Message:    err.Error(),
-		})
+		helper.ResponseJsonError(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	ctx.JSON(http.StatusOK, response.Success{
-		StatusCode: http.StatusOK,
-		Message:    "Success",
-		Data:       result,
-	})
+	helper.ResponseJsonSuccess(ctx, http.StatusOK, "Success", result)
 }
